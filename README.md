@@ -34,8 +34,9 @@ Sitemap: https://kbland.kr/sitemap_index.xml
 
 와인 샵
 - https://blog.naver.com/joyangmart
-- https://blog.naver.com/smdcmart
-와인 정보 사이트
+- https://blog.naver.com/smdcmart  
+
+와인 정보 사이트  
 - https://www.wine21.com/
 - https://www.vivino.com/
 - https://www.wine-searcher.com/
