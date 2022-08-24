@@ -61,5 +61,3 @@ time.sleep(1)
 get_title_url_from_table(web_driver) # 두번째 목록 읽기
 
 print(title_url_dic)
-
-
