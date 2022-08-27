@@ -21,7 +21,7 @@ class JoyangBlog(Blog) :
         table = self.web_driver.find_element(By.XPATH, '//*[@id="listTopForm"]/table') 
         tbody = table.find_element(By.TAG_NAME,'tbody')
         rows = tbody.find_elements(By.TAG_NAME,'tr')
-        for index, value in enumerate(rows):
+        for value in rows:
             td_body = value.find_elements(By.TAG_NAME,'td')
             title = td_body[0].find_element(By.TAG_NAME,'a')
             date = td_body[1].find_element(By.TAG_NAME,'span')
@@ -34,12 +34,11 @@ class JoyangBlog(Blog) :
         self.web_driver.find_element(By.XPATH,'//*[@id="toplistWrapper"]/div[2]/div/a[1]').click() # 다음 목록 열기
         time.sleep(1)
      
-    def print_title_url(self) :
-        print(self.title_url_date_dic)
+
 
     def access_to_post(self) :
         title = self.find_correct_post()
-        title = "8월 1주차 입고리스트"
+        # title = "8월 1주차 입고리스트"
         if title is not None :
             self.web_driver.get(self.title_url_date_dic[title][0])
             time.sleep(1)
@@ -49,6 +48,7 @@ class JoyangBlog(Blog) :
     def check_post_name(self, post_title) :
         if '입고리스트' in post_title or '입고 리스트' in post_title :
             return True
+        return False
 
     def find_correct_post(self) :
         for key in self.title_url_date_dic :
@@ -57,10 +57,9 @@ class JoyangBlog(Blog) :
         return None
 
     def read_content(self) :
-        self.wine_list = []
-        table_block = self.web_driver.find_element(By.XPATH,'//*[@id="SE-a6fd6072-e4ae-41e9-b5ad-946a8fa5de15"]/div/div/blockquote/div[2]')
-        table_list = table_block.find_elements(By.TAG_NAME, 'p')
-        for w in table_list :
+        content = self.web_driver.find_element(By.XPATH,'//*[@id="SE-a6fd6072-e4ae-41e9-b5ad-946a8fa5de15"]/div/div/blockquote/div[2]')
+        content_list = table_block.find_elements(By.TAG_NAME, 'p')
+        for w in content_list :
             self.wine_list.append(w.text)
         print(self.wine_list)
 

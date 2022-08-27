@@ -22,6 +22,8 @@ class Blog :
         self.web_driver = webdriver.Chrome(service = Service("/mnt/c/Users/jake0/Desktop/Study/22sdc-1st-new-article-slack-noti/chromedriver"),options=self.chrome_options)
         self.title_list = []
         self.title_url_date_dic = {}
+        self.wine_list = []
+
 
     def open_web_driver(self):
         self.web_driver.get(self.first_page_url)
@@ -30,14 +32,9 @@ class Blog :
     def switch_to_frame(self, frame_name) :
         self.web_driver.switch_to.frame(frame_name)
 
-
     def print_date(self) :
         month_week_format = '{month}월 {date}일'.format(month = self.today_month, date = self.today_date)
         print(month_week_format)
-
-
-    def find_post_date(self) :
-        self.post_date = self.web_driver.find_element(By.XPATH,'//*[@id="SE-5cac2668-841b-47ed-9d99-380c29cde6a2"]/div/div/div[3]/span[2]').text
 
     def check_post_date(self, post_date):
         if '시간' in post_date :
@@ -50,3 +47,6 @@ class Blog :
             return True
         else :
             return False
+
+    def print_title_url(self) :
+        print(self.title_url_date_dic)
