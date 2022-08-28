@@ -21,5 +21,6 @@ def main() :
     smdcmart_blog.print_title_url()
     smdcmart_blog.access_to_post()
     smdcmart_blog.read_content()
+    smdcmart_blog.print_wine_list()
 main()
 

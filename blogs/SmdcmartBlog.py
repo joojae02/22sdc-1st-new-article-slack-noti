@@ -10,12 +10,12 @@ class SmdcmartBlog(Blog) :
     def __init__ (self, name, first_page_url) :
         super(SmdcmartBlog, self).__init__(name, first_page_url)
 
-    def open_post_table(self) :
+    def get_post_table(self) :
         return self.web_driver.find_element(By.XPATH, '//*[@id="prologue"]/dl')
 
     def read_title_url_date_from_table(self) : 
         print('read_title_url_date_from_table')
-        dd_table = self.open_post_table()
+        dd_table = self.get_post_table()
         dd_list = dd_table.find_elements(By.TAG_NAME, 'dd')
         for value in dd_list :
             tag_ul = value.find_element(By.TAG_NAME, 'ul')
@@ -31,7 +31,6 @@ class SmdcmartBlog(Blog) :
     def access_to_post(self) :
         title = self.find_correct_post()
         # title = "8월 1주차 입고리스트"
-
         if title is not None :
             self.web_driver.get(self.title_url_date_dic[title][0])
             time.sleep(1)
@@ -58,5 +57,8 @@ class SmdcmartBlog(Blog) :
             
             for w in text_list :
                 self.wine_list.append(w.text)
+
+    def print_wine_list(self) :
+        print(self.wine_list)
 
         
