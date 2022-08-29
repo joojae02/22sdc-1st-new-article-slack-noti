@@ -50,3 +50,22 @@ class Blog :
 
     def print_title_url(self) :
         print(self.title_url_date_dic)
+
+    def print_wine_list(self) :
+        print(self.wine_list)
+        
+    def read_content(self) :
+        content = self.web_driver.find_element(By.CLASS_NAME, 'se-main-container')
+        text_content_list = content.find_elements(By.CLASS_NAME, 'se-component.se-text.se-l-default')
+        
+        for text_content in text_content_list :
+            text_list = text_content.find_elements(By.TAG_NAME, 'span')
+            
+            for w in text_list :
+                self.wine_list.append(w.text)
+
+    def find_correct_post(self) :
+        for key in self.title_url_date_dic :
+            if self.check_post_date(self.title_url_date_dic[key][1]) and self.check_post_name(key) :
+                return key
+        return None

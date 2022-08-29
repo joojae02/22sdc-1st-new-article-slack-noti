@@ -18,12 +18,13 @@ class SmdcmartBlog(Blog) :
         dd_table = self.get_post_table()
         dd_list = dd_table.find_elements(By.TAG_NAME, 'dd')
         for value in dd_list :
-            tag_ul = value.find_element(By.TAG_NAME, 'ul')
-            tag_a = tag_ul.find_element(By.TAG_NAME, 'a')
+            class_tag_title = value.find_element(By.CLASS_NAME, 'p_title')
+            class_tag_date = value.find_element(By.CLASS_NAME, 'p_date')
+            tag_a = class_tag_title.find_element(By.TAG_NAME, 'a')
             title = tag_a.get_attribute('text')            
             url = tag_a.get_attribute('href')
             
-            date = tag_ul.find_element(By.TAG_NAME,'span')
+            date = class_tag_date.find_element(By.TAG_NAME,'span')
 
             self.title_list.append(title)
             self.title_url_date_dic[title] = [url, date.text]
@@ -42,23 +43,10 @@ class SmdcmartBlog(Blog) :
             return True
         return False
 
-    def find_correct_post(self) :
-        for key in self.title_url_date_dic :
-            if self.check_post_date(self.title_url_date_dic[key][1]) and self.check_post_name(key) :
-                return key
-        return None
+    
 
-    def read_content(self) :
-        content = self.web_driver.find_element(By.XPATH,'//*[@id="post-view222858485837"]/div/div[2]')
-        text_content_list = content.find_elements(By.CLASS_NAME, 'se-component.se-text.se-l-default')
-        
-        for text_content in text_content_list :
-            text_list = text_content.find_elements(By.TAG_NAME, 'span')
-            
-            for w in text_list :
-                self.wine_list.append(w.text)
+    
 
-    def print_wine_list(self) :
-        print(self.wine_list)
+    
 
         
