@@ -24,7 +24,9 @@ class Blog :
         self.title_url_date_dic = {}
         self.wine_list = []
 
-
+    def get_wine_list(self) :
+        return self.wine_list
+    
     def open_web_driver(self):
         self.web_driver.get(self.first_page_url)
         time.sleep(3)
@@ -69,3 +71,5 @@ class Blog :
             if self.check_post_date(self.title_url_date_dic[key][1]) and self.check_post_name(key) :
                 return key
         return None
+
+    

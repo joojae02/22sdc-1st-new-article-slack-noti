@@ -47,7 +47,16 @@ class JoyangBlog(Blog) :
             print('해당하는 게시물이 없습니다')
 
 
-
+    def save_wine_list(self) :
+        self.open_web_driver()
+        self.switch_to_frame('mainFrame')
+        self.open_first_post_table()
+        self.read_title_url_date_from_table()
+        self.open_second_next_post_table()
+        self.read_title_url_date_from_table()
+        self.print_title_url()
+        self.access_to_post()
+        self.read_content()
 
 
 

@@ -43,8 +43,15 @@ class SmdcmartBlog(Blog) :
             return True
         return False
 
+    def save_wine_list(self) :
+        self.open_web_driver()
+        self.switch_to_frame('mainFrame')
+        self.read_title_url_date_from_table()
+        self.print_title_url()
+        self.access_to_post()
+        self.read_content()
     
-
+        
     
 
     
