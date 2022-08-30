@@ -23,7 +23,7 @@ class Blog :
         self.title_list = []
         self.title_url_date_dic = {}
         self.wine_list = []
-
+        self.content_title = ''
     def get_wine_list(self) :
         return self.wine_list
     
@@ -33,10 +33,6 @@ class Blog :
 
     def switch_to_frame(self, frame_name) :
         self.web_driver.switch_to.frame(frame_name)
-
-    def print_date(self) :
-        month_week_format = '{month}월 {date}일'.format(month = self.today_month, date = self.today_date)
-        print(month_week_format)
 
     def check_post_date(self, post_date):
         if '시간' in post_date :
@@ -50,12 +46,6 @@ class Blog :
         else :
             return False
 
-    def print_title_url(self) :
-        print(self.title_url_date_dic)
-
-    def print_wine_list(self) :
-        print(self.wine_list)
-        
     def read_content(self) :
         content = self.web_driver.find_element(By.CLASS_NAME, 'se-main-container')
         text_content_list = content.find_elements(By.CLASS_NAME, 'se-component.se-text.se-l-default')
@@ -71,5 +61,7 @@ class Blog :
             if self.check_post_date(self.title_url_date_dic[key][1]) and self.check_post_name(key) :
                 return key
         return None
-
-    
+    def get_content_title (self) :
+        return self.content_title
+    def print_wine_list(self) :
+        print(self.wine_list)

@@ -38,10 +38,10 @@ class JoyangBlog(Blog) :
         return False
     
     def access_to_post(self) :
-        title = self.find_correct_post()
-        title = "8월 1주차 입고리스트"
-        if title is not None :
-            self.web_driver.get(self.title_url_date_dic[title][0])
+        self.content_title = self.find_correct_post()
+        self.content_title = "8월 1주차 입고리스트"
+        if self.content_title is not None :
+            self.web_driver.get(self.title_url_date_dic[self.content_title][0])
             time.sleep(1)
         else :
             print('해당하는 게시물이 없습니다')
@@ -54,7 +54,6 @@ class JoyangBlog(Blog) :
         self.read_title_url_date_from_table()
         self.open_second_next_post_table()
         self.read_title_url_date_from_table()
-        self.print_title_url()
         self.access_to_post()
         self.read_content()
 

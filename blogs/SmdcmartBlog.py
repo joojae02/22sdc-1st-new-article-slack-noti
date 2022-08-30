@@ -14,7 +14,6 @@ class SmdcmartBlog(Blog) :
         return self.web_driver.find_element(By.XPATH, '//*[@id="prologue"]/dl')
 
     def read_title_url_date_from_table(self) : 
-        print('read_title_url_date_from_table')
         dd_table = self.get_post_table()
         dd_list = dd_table.find_elements(By.TAG_NAME, 'dd')
         for value in dd_list :
@@ -30,10 +29,9 @@ class SmdcmartBlog(Blog) :
             self.title_url_date_dic[title] = [url, date.text]
 
     def access_to_post(self) :
-        title = self.find_correct_post()
-        # title = "8월 1주차 입고리스트"
-        if title is not None :
-            self.web_driver.get(self.title_url_date_dic[title][0])
+        self.content_title = self.find_correct_post()
+        if self.content_title is not None :
+            self.web_driver.get(self.title_url_date_dic[self.content_title][0])
             time.sleep(1)
         else :
             print('해당하는 게시물이 없습니다')
@@ -47,7 +45,6 @@ class SmdcmartBlog(Blog) :
         self.open_web_driver()
         self.switch_to_frame('mainFrame')
         self.read_title_url_date_from_table()
-        self.print_title_url()
         self.access_to_post()
         self.read_content()
     
