@@ -1,14 +1,14 @@
 import requests
 import json
 from slack_sdk import WebClient
-
+import slack_info
 class SlackBot :
-    def __init__(self, blog, oauth_token, channel_name) :
+    def __init__(self, blog) :
         self.blog = blog
         self.content_list = self.blog.get_wine_list()
         self.content_title = self.blog.get_content_title()
-        self.channel_name = channel_name
-        self.client = WebClient(token = oauth_token)
+        self.channel_name = slack_info.channel_name
+        self.client = WebClient(token = slack_info.oauth_token)
 
     def post_message(self):
         """
