@@ -14,8 +14,6 @@ class SmdcmartBlog(Blog) :
         self.switch_to_frame('mainFrame')
         self.read_title_url_date_from_table()
         self.read_content_posts()
-        print(self.title_content_dic)
-
         self.insert_db_title_list()
 
     def get_post_table(self) :
@@ -34,6 +32,8 @@ class SmdcmartBlog(Blog) :
             date = class_tag_date.find_element(By.TAG_NAME,'span')
             if self.check_post_name(title) :
                 self.title_list.append(title)
+                if self.db.is_title_not_exist_in_db(title) == 1 :
+                    self.not_exist_title_list.append(title)
                 self.title_url_date_dic[title] = [url, date.text]
         
     def check_post_name(self, post_title) :

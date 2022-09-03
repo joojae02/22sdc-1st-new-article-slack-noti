@@ -16,10 +16,7 @@ class JoyangBlog(Blog) :
         self.switch_to_frame('mainFrame')
         self.open_post_table()
         self.read_title_url_date_from_table()
-        self.open_second_next_post_table()
-        self.read_title_url_date_from_table()
         self.read_content_posts()
-        print(self.title_content_dic)
         self.insert_db_title_list()
 
     def open_post_table(self) :
@@ -36,9 +33,10 @@ class JoyangBlog(Blog) :
             title = td_body[0].find_element(By.TAG_NAME,'a')
             date = td_body[1].find_element(By.TAG_NAME,'span')
             url = title.get_attribute('href')
-
             if self.check_post_name(title.text) :
                 self.title_list.append(title.text)
+                if self.db.is_title_not_exist_in_db(title.text) == 1 :
+                    self.not_exist_title_list.append(title.text)
                 self.title_url_date_dic[title.text] = [url, date.text]
         
 

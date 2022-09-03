@@ -5,26 +5,24 @@ import slack_info
 class SlackBot :
     def __init__(self, blog) :
         self.blog = blog
-        self.content_list = self.blog.get_wine_list()
-        self.content_title = self.blog.get_content_title()
+        self.blog_name = self.blog.get_name()
+        self.not_exist_title_list = self.blog.get_not_exist_title_list()
+        self.title_content_dic = self.blog.get_title_content_dic()
         self.channel_name = slack_info.channel_name
         self.client = WebClient(token = slack_info.oauth_token)
+    def post_messages(self) :
+        channel_id = self.channel_name
+        for title in self.not_exist_title_list :
+            self.post_message(title, channel_id, self.title_content_dic[title])
 
-    def post_message(self):
+    def post_message(self, title, channel_id, content):
         """
         슬랙 채널 내 메세지의 Thread에 댓글 달기
         """
-        text = self.get_wine_list_to_str()
-        channel_id = self.channel_name
-            # chat_postMessage() 메서드 호출
+        text = self.blog_name + ' : '+ title + ' \n' + content
+        
         result = self.client.chat_postMessage(
             channel=channel_id,
             text = text
         )
         return result
-
-    def get_wine_list_to_str(self) :
-        text = '새로운 게시물 : ' + self.content_title + '\n'
-        for s in self.content_list :
-            text += s + '\n'
-        return text
