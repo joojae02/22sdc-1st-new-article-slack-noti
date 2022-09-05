@@ -8,7 +8,7 @@ def main() :
     db = DB()
     joyang_blog = JoyangBlog('조양', 'https://blog.naver.com/joyangmart', db)
     joyang_blog.open_web_driver()
-    """joyang_blog.save_wine_list()
+    joyang_blog.save_wine_list()
     smdcmart_blog = SmdcmartBlog('구판장', 'https://blog.naver.com/smdcmart', db)
     smdcmart_blog.save_wine_list()
     
@@ -16,7 +16,7 @@ def main() :
     slack_bot.post_messages()
 
     slack_bot1 = SlackBot(smdcmart_blog)
-    slack_bot1.post_messages()"""
+    slack_bot1.post_messages()
 
 
 def handler_name(event, context): 

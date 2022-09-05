@@ -13,11 +13,11 @@ class JoyangBlog(Blog) :
 
     def save_wine_list(self) :
         self.open_web_driver()
-        self.switch_to_frame('mainFrame')
-        self.open_post_table()
+        # self.switch_to_frame('mainFrame')
+        """self.open_post_table()
         self.read_title_url_date_from_table()
         self.read_content_posts()
-        self.insert_db_title_list()
+        self.insert_db_title_list()"""
 
     def open_post_table(self) :
         self.web_driver.find_element(By.

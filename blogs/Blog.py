@@ -26,7 +26,7 @@ class Blog :
     def open_web_driver(self):
         self.web_driver.get(self.first_page_url)
         time.sleep(1)
-        print(self.web_driver.execute_script('return navigator.userAgent'))
+
 
 
     def switch_to_frame(self, frame_name) :
