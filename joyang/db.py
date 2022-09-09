@@ -1,5 +1,6 @@
-import db_info
 import pymysql
+import os
+import requests
 import json
 
 class DB :
@@ -12,6 +13,7 @@ class DB :
             db = os.environ['db_name'], 
             charset='utf8'
         )
+        print('connect success!')
 
     def insert_db (self, title, content, site, url) :
         sql = """

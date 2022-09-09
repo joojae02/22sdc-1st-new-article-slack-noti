@@ -1,6 +1,8 @@
+import os
 import requests
 import json
 from slack_sdk import WebClient
+
 class SlackBot :
     def __init__(self, blog) :
         self.blog = blog
