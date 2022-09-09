@@ -3,19 +3,33 @@ import time
 from datetime import datetime, timedelta
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class Blog :
 
-    chrome_options = webdriver.ChromeOptions()
     def __init__ (self, name, first_page_url, db) :
         self.name = name
         self.db = db
         self.first_page_url = first_page_url
+        self.chrome_options = webdriver.ChromeOptions()
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
-        self.chrome_options.add_argument('--disable-dev-shm-usage')
-        self.chrome_options.binary_location= '/usr/bin/google-chrome'
-        self.web_driver = webdriver.Chrome(service = Service("/mnt/c/Users/jake0/Desktop/Study/22sdc-1st-new-article-slack-noti/chromedriver"),options=self.chrome_options)
+        self.chrome_options.add_argument("--disable-gpu")
+        self.chrome_options.add_argument("--window-size=1280x1696")
+        self.chrome_options.add_argument("--single-process")
+        self.chrome_options.add_argument("--disable-dev-shm-usage")
+        self.chrome_options.add_argument("--disable-dev-tools")
+        self.chrome_options.add_argument("--no-zygote")
+        # chrome_options.add_argument('--user-data-dir=/tmp/chrome-user-data')
+        self.chrome_options.add_argument("--remote-debugging-port=9222")
+
+        # self.chrome_options.binary_location = '/root/chrome-linux/chrome'
+        # self.web_driver = webdriver.Chrome("/root/chromedriver", options = self.chrome_options)
+        # chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.0 Safari/537.36')
+        self.chrome_options.binary_location = '/opt/chrome/chrome'
+        self.web_driver = webdriver.Chrome("/opt/chromedriver", options=self.chrome_options)
+
         self.title_list = []
         self.not_exist_title_list = []
         self.title_content_dic = {}
@@ -24,14 +38,14 @@ class Blog :
 
     
     def open_web_driver(self):
-        self.web_driver.get(self.first_page_url)
-        time.sleep(1)
+        print(self.first_page_url)
+        self.web_driver.get(self.first_page_url)        
 
 
 
     def switch_to_frame(self, frame_name) :
         self.web_driver.switch_to.frame(frame_name)
-    
+        print("switch_to_frame")
 
     def read_content(self) :
         content = self.web_driver.find_element(By.CLASS_NAME, 'se-main-container')
@@ -56,8 +70,11 @@ class Blog :
     
     def read_content_posts(self) :
         for title in self.not_exist_title_list :
+            print(title + " : " + self.title_url_date_dic[title][0])
             self.web_driver.get(self.title_url_date_dic[title][0])
-            time.sleep(1)
+            element = WebDriverWait(self.web_driver, 30).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'se-main-container'))
+            )
             self.title_content_dic[title] = self.list_to_str(self.read_content())
 
 

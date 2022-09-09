@@ -1,15 +1,14 @@
 import requests
 import json
 from slack_sdk import WebClient
-import slack_info
 class SlackBot :
     def __init__(self, blog) :
         self.blog = blog
         self.blog_name = self.blog.get_name()
         self.not_exist_title_list = self.blog.get_not_exist_title_list()
         self.title_content_dic = self.blog.get_title_content_dic()
-        self.channel_name = slack_info.channel_name
-        self.client = WebClient(token = slack_info.oauth_token)
+        self.channel_name = os.environ['channel_name']
+        self.client = WebClient(token = os.environ['oauth_token'])
     def post_messages(self) :
         channel_id = self.channel_name
         for title in self.not_exist_title_list :

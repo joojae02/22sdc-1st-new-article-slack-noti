@@ -5,14 +5,13 @@ import json
 class DB :
     def __init__(self) :
         self.blog_db =  pymysql.connect(
-            user= db_info.db_username, 
-            port = db_info.db_port,
-            passwd = db_info.db_password, 
-            host = db_info.db_host, 
-            db = db_info.db_name, 
+            user = os.environ['db_username'], 
+            port = int(os.environ['db_port']), 
+            passwd = os.environ['db_password'], 
+            host = os.environ['db_host'], 
+            db = os.environ['db_name'], 
             charset='utf8'
         )
-
 
     def insert_db (self, title, content, site, url) :
         sql = """

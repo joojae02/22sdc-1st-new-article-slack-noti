@@ -1,4 +1,4 @@
-from .Blog import Blog
+from Blog import Blog
 from selenium import webdriver
 import time
 from datetime import datetime, timedelta
