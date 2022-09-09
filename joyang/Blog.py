@@ -15,11 +15,14 @@ class Blog :
         self.chrome_options = webdriver.ChromeOptions()
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
-        self.chrome_options.add_argument("window-size=1920,1080")
+        self.chrome_options.add_argument("--window-size=1920,1080")
         self.chrome_options.add_argument("--single-process")
         self.chrome_options.add_argument("--disable-dev-shm-usage")
         self.chrome_options.add_argument("--disable-dev-tools")
         self.chrome_options.add_argument("--no-zygote")
+
+        # self.chrome_options.add_argument("--disable-gpu")
+        # self.chrome_options.add_experimental_option('extensionLoadTimeout', 60000)
         # chrome_options.add_argument('--user-data-dir=/tmp/chrome-user-data')
         self.chrome_options.add_argument("--remote-debugging-port=9222")
 
@@ -42,7 +45,7 @@ class Blog :
         print(self.title_list)
         self.read_content_posts()
         self.insert_db_title_list()
-        
+
     def open_post_table(self) :
         self.web_driver.find_element(By.CLASS_NAME, 'pcol2._toggleTopList._returnFalse').click()
         time.sleep(1)

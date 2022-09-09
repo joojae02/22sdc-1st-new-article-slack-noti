@@ -13,13 +13,16 @@ class Blog :
         self.db = db
         self.first_page_url = first_page_url
         self.chrome_options = webdriver.ChromeOptions()
-        self.chrome_options.add_argument('--headless')
+        self.chrome_options.add_argument('headless')
         self.chrome_options.add_argument('--no-sandbox')
         self.chrome_options.add_argument("window-size=1920,1080")
         self.chrome_options.add_argument("--single-process")
         self.chrome_options.add_argument("--disable-dev-shm-usage")
         self.chrome_options.add_argument("--disable-dev-tools")
         self.chrome_options.add_argument("--no-zygote")
+
+        # self.chrome_options.add_argument("--disable-gpu")
+        # self.chrome_options.add_experimental_option('extensionLoadTimeout', 60000)
         # chrome_options.add_argument('--user-data-dir=/tmp/chrome-user-data')
         self.chrome_options.add_argument("--remote-debugging-port=9222")
 
@@ -92,6 +95,7 @@ class Blog :
         for title in self.not_exist_title_list :
             print(title + " : " + self.title_url_date_dic[title][0])
             self.web_driver.get(self.title_url_date_dic[title][0])
+            time.sleep(5)
             self.title_content_dic[title] = self.list_to_str(self.read_content())
             
 
