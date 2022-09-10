@@ -13,23 +13,18 @@ class Blog :
         self.db = db
         self.first_page_url = first_page_url
         self.chrome_options = webdriver.ChromeOptions()
+        self.chrome_options.binary_location = '/opt/chrome/chrome'
+
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
-        self.chrome_options.add_argument("--window-size=1920,1080")
+        self.chrome_options.add_argument("--start-maximized")
         self.chrome_options.add_argument("--single-process")
         self.chrome_options.add_argument("--disable-dev-shm-usage")
         self.chrome_options.add_argument("--disable-dev-tools")
         self.chrome_options.add_argument("--no-zygote")
 
         # self.chrome_options.add_argument("--disable-gpu")
-        # self.chrome_options.add_experimental_option('extensionLoadTimeout', 60000)
-        # chrome_options.add_argument('--user-data-dir=/tmp/chrome-user-data')
         self.chrome_options.add_argument("--remote-debugging-port=9222")
-
-        # self.chrome_options.binary_location = '/root/chrome-linux/chrome'
-        # self.web_driver = webdriver.Chrome("/root/chromedriver", options = self.chrome_options)
-        # chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.0 Safari/537.36')
-        self.chrome_options.binary_location = '/opt/chrome/chrome'
         self.web_driver = webdriver.Chrome("/opt/chromedriver", options=self.chrome_options)
 
         self.title_list = []
@@ -104,7 +99,13 @@ class Blog :
         for title in self.not_exist_title_list :
             print(title + " : " + self.title_url_date_dic[title][0])
             self.web_driver.get(self.title_url_date_dic[title][0])
-            self.title_content_dic[title] = self.list_to_str(self.read_content())
+            try:
+                element = WebDriverWait(self.web_driver, 30).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'se-main-container'))
+                )
+                self.title_content_dic[title] = self.list_to_str(self.read_content())
+            except TimeoutException:
+                print("timeout")
             
 
     def read_content(self) :
