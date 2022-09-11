@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 class Blog :
 
@@ -16,7 +17,6 @@ class Blog :
         self.chrome_options = webdriver.ChromeOptions()
         self.chrome_options.binary_location = '/opt/chrome/chrome'
         # self.chrome_options.binary_location = '/root/chrome-linux/chrome'
-
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
         self.chrome_options.add_argument("--start-maximized")
@@ -29,6 +29,7 @@ class Blog :
         self.chrome_options.add_argument("--remote-debugging-port=9222")
         # self.web_driver = webdriver.Chrome("/root/chromedriver", options=self.chrome_options)
         self.web_driver = webdriver.Chrome("/opt/chromedriver", options=self.chrome_options)
+        self.web_driver.set_page_load_timeout(300)
 
         self.title_list = []
         self.not_exist_title_list = []
@@ -64,8 +65,12 @@ class Blog :
         return False
 
     def open_web_driver(self):
-        print(self.first_page_url)
-        self.web_driver.get(self.first_page_url)        
+        print("open_web_driver")
+        t = time.time()
+        print(self.first_page_url)   
+        self.web_driver.get(self.first_page_url)
+        print(self.web_driver.current_url , ': Time consuming:', time.time() - t)
+        
 
     def switch_to_frame(self, frame_name) :
         self.web_driver.switch_to.frame(frame_name)
@@ -79,9 +84,13 @@ class Blog :
 
     def read_content_posts(self) :
         for title in self.not_exist_title_list :
-            self.web_driver.manage().deleteAllCookies()
             print(title + " : " + self.title_url_date_dic[title][0])
-            self.web_driver.get(self.title_url_date_dic[title][0])
+            t = time.time()   
+            try:
+                self.web_driver.get(self.title_url_date_dic[title][0])  
+            except TimeoutException:
+                self.web_driver.execute_script("window.stop();")
+            print(self.web_driver.current_url , ': Time consuming: ', time.time() - t)            
             try:
                 element = WebDriverWait(self.web_driver, 30).until(
                     EC.presence_of_element_located((By.CLASS_NAME, 'se-main-container'))
@@ -90,6 +99,10 @@ class Blog :
             except TimeoutException:
                 print("timeout")
             
+    def open_url(self, url) :
+        tmp = webdriver.Chrome("/opt/chromedriver", options = self.chrome_options)
+        return tmp.get(url)
+
         
     def read_content(self) :
         content = self.web_driver.find_element(By.CLASS_NAME, 'se-main-container')
