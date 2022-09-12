@@ -51,7 +51,6 @@ class Blog :
             tag_a = tag_ul.find_element(By.TAG_NAME, 'a')
             title = tag_a.text        
             url = tag_a.get_attribute('href')[0:-14]
-            print(title + " : " + url)
             date = tag_ul.find_element(By.TAG_NAME,'span')
             if self.check_post_name(title) :
                 self.title_list.append(title)
@@ -84,7 +83,6 @@ class Blog :
 
     def read_content_posts(self) :
         for title in self.not_exist_title_list :
-            print(title + " : " + self.title_url_date_dic[title][0])
             t = time.time()   
             try:
                 self.web_driver.get(self.title_url_date_dic[title][0])  
