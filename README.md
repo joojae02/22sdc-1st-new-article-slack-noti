@@ -1,4 +1,10 @@
 # 22sdc-1st-new-article-slack-noti
+- aws lambda
+- aws rds mysql
+- Python 3.9
+- chromium 105.0.5195.0
+- chromedriver 105.0.5195.52
+- selenium 4.4.3
 
 ## 와인 사이트, 샵 블로그, 인스타 
 
