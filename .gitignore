@@ -1,2 +1,5 @@
 ./__pycache__
 __pycache__
+db_info.py
+slack_info.py
+img
