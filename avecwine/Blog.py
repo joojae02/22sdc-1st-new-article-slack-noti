@@ -56,6 +56,22 @@ for i in range(1, 13) :
     for url in url_list :
         web_driver.get(url)
         name_table = web_driver.find_element(By.XPATH, '//*[@id="wine_view_wrap"]/div[3]/div')
+        text = name_table.text
+        text_list = text.split('\n')
+        wine_tmp = ''
+        for i in range(len(text_list)) :
+            if text_list[i] == '색' or text_list[i] == ' 색':
+                wine_tmp = wine_tmp + text_list[i + 1] + " "
+            elif text_list[i] == '향' or text_list[i] == ' 향':
+                wine_tmp = wine_tmp + text_list[i + 1] + " "
+            elif text_list[i] == '맛' or text_list[i] == ' 맛':
+                wine_tmp = wine_tmp + text_list[i + 1] + " "
+            elif text_list[i] == '서비스 온도' or text_list[i] == ' 서비스 온도':
+                wine_tmp = wine_tmp + text_list[i + 1] + " "
+
+
+
+
         wine_dec.append(name_table.text)
         '''name_table = web_driver.find_element(By.XPATH, '//*[@id="wine_view_wrap"]/div[1]/div[2]/div')
         wine_en_name.append( name_table.find_element(By.TAG_NAME, 'h3').text)
