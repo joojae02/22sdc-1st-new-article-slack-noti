@@ -54,6 +54,7 @@ wine_dec = []
 num = 321
 
 for i in range(1, 5) :
+    
     url_list = []
 
     web_driver.get('https://zasperowine.com/?swoof=1&post_type=product&paged=1&paged=' + str(i))
