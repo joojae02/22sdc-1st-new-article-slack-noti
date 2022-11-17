@@ -25,7 +25,9 @@ main_url = 'http://www.avecwine.co.kr/'
 
 wine_kor_name = [] 
 wine_en_name = []
+
 wine_type = []
+
 wine_winery = []
 wine_winery_en = []
 
@@ -34,17 +36,17 @@ wine_region = []
 wine_grape = []
 
 wine_grade = []
-wine_win = []
 
 wine_size = []
 wine_body = []
 wine_sweetness = []
 wine_color = []
 wine_temp = []
+wine_alc = []
 wine_nose = []
 wine_taste = []
 wine_paring = []
-
+wine_vintage = []
 wine_desc = []
 winery_desc = []
 
@@ -54,7 +56,7 @@ wine_dec = []
 num = 321
 
 for i in range(1, 5) :
-    
+
     url_list = []
 
     web_driver.get('https://zasperowine.com/?swoof=1&post_type=product&paged=1&paged=' + str(i))
@@ -68,47 +70,59 @@ for i in range(1, 5) :
 
     for url in url_list :
         web_driver.get(url)
-        wine_table = web_driver.find_element(By.XPATH, '//*[@id="product-665"]')
-        kor_name = wine_table.find_element(By.XPATH, '//*[@id="product-665"]/div[2]/h1').text
+        wine_post_id = web_driver.find_element(By.CLASS_NAME, 'zita-article').get_attribute('id').replace('post', 'product')
+        wine_table = web_driver.find_element(By.XPATH, '//*[@id="' +wine_post_id +'"]')
+        # 이름
+        kor_name = wine_table.find_element(By.XPATH, '//*[@id="' +wine_post_id +'"]/div[2]/h1').text
         names = kor_name.split('\n')
         kor_name = names[0] + ' ' + names[1]
-        en_name = wine_table.find_element(By.XPATH, '//*[@id="product-665"]/div[2]/div/p').text
+        en_name = wine_table.find_element(By.XPATH, '//*[@id="' +wine_post_id +'"]/div[2]/div/p').text
         wine_en_name.append(en_name)
         wine_kor_name.append(kor_name)
         
-        view_desc = web_driver.find_element(By.XPATH, '//*[@id="product-663"]/div[2]/div/table/tbody')
+        view_desc = web_driver.find_element(By.XPATH, '//*[@id="' +wine_post_id +'"]/div[2]/div/table')
+        # 규격화 된 와인 정보
+        tr_list = view_desc.find_elements(By.TAG_NAME, 'tr')
+        li_list = []
+        for i in tr_list :
+            td_list = i.find_elements(By.TAG_NAME, 'td')
+            li_list.append(td_list[1].text)
         
-        li_list = view_desc.find_elements(By.TAG_NAME, 'tr')
+
         
-        for i in li_list :
-            
-        wine_type.append(li_list[0].text.replace('타입',''))
+        wtype = li_list[0].split('(')
+        wine_type.append(wtype[0])
 
+        wwinery = li_list[1].replace(')','').split('(')
+        wine_winery.append(wwinery[0])
+        wine_winery_en.append(wwinery[1])
 
-        wine_winery_en.append(li_list[0].text.replace('와이너리',''))
-        wine_country.append(li_list[1].text.replace('생산국',''))
-        wine_region.append(li_list[2].text.replace('생산지역',''))
-        wine_grape.append(li_list[4].text.replace('포도품종',''))
-        wine_size.append(li_list[5].text.replace('용량',''))
-        wine_temp.append(li_list[6].text.replace('음용온도',''))
+        wcountry = li_list[2].replace(')','').split('(')
+        wine_country.append(wcountry[0])
+        wine_region.append(wcountry[1])
 
-        '''body_table = web_driver.find_element(By.XPATH, '//*[@id="wine_view_wrap"]/div[2]/div[1]/div')
-        li_list = body_table.find_elements(By.CLASS_NAME, 'on')
-        wine_body.append(li_list[len(li_list) - 1].text)
+        wine_grape.append(li_list[3])
 
-        body_table = web_driver.find_element(By.XPATH, '//*[@id="wine_view_wrap"]/div[2]/div[2]/div')
-        li_list = body_table.find_elements(By.CLASS_NAME, 'on')
-        wine_sweetness.append(li_list[len(li_list) - 1].text)'''
-        
-        body_table = web_driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[3]')
-        txt_desc = body_table.find_element(By.CLASS_NAME, 'txt_desc')
-        wine_desc.append(txt_desc.text.replace('\n',''))
-        body_table = web_driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/div/div[2]/div[2]/div[4]')
-        txt_desc = body_table.find_element(By.CLASS_NAME, 'txt_desc')
-        winery_desc.append(txt_desc.text.replace('\n',''))
+        wine_grade.append(li_list[4])
+        wine_vintage.append(li_list[5])
+        wine_alc.append(li_list[6])
+
+        # 비규격 와인 정보
+        body_table = web_driver.find_element(By.XPATH, '//*[@id="tab-description"]')
+        desc = body_table.text.replace('\n',' ')
+        desc.replace('Note','')
+        desc.replace('Vivino rating','')
+        desc_list = desc.split('Winery')
+
+        wine_desc.append(desc_list[0])
+
+        if len(desc_list) != 1 :
+            winery_desc.append(desc_list[1])
+        else :
+            winery_desc.append('')
 
         # 사진
-        image_url = web_driver.find_element(By.XPATH, '//*[@id="product-665"]/div[1]/figure/div/a/img').get_attribute('src')
+        image_url = web_driver.find_element(By.XPATH, '//*[@id="' +wine_post_id +'"]/div[1]/figure/div/a/img').get_attribute('src')
 
         wine_num = 'jh_' + str(num).zfill(6)
         wine_no.append(wine_num)
@@ -136,18 +150,22 @@ for index in range(len(wine_no)) :
 
     sheet.cell(row = i, column = 7).value = wine_country[index]
     sheet.cell(row = i, column = 8).value = wine_region[index]
-    sheet.cell(row = i, column = 9).value = wine_grape[index]
-    sheet.cell(row = i, column = 10).value = wine_size[index]
-    sheet.cell(row = i, column = 11).value = wine_temp[index]
+    
+    sheet.cell(row = i, column = 9).value = wine_grade[index]
 
-    sheet.cell(row = i, column = 12).value = wine_image_list[index]
+    sheet.cell(row = i, column = 10).value = wine_grape[index]
+
+    sheet.cell(row = i, column = 12).value = wine_vintage[index]
+    sheet.cell(row = i, column = 13).value = wine_alc[index]
+
+    sheet.cell(row = i, column = 14).value = wine_image_list[index]
 
     # sheet.cell(row = i, column = 9).value = wine_win[index]
-    sheet.cell(row = i, column = 15).value = wine_desc[index]
-    sheet.cell(row = i, column = 16).value = winery_desc[index]
+    sheet.cell(row = i, column = 17).value = wine_desc[index]
+    sheet.cell(row = i, column = 18).value = winery_desc[index]
     # sheet.cell(row = i, column = 12).value = wine_sweetness[index]
 
-wb.save('mervin.xlsx')
+wb.save('zaspero.xlsx')
 
 
 
