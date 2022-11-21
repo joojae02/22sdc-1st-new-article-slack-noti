@@ -16,6 +16,8 @@ chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument("--single-process")
 chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument('--start-maximized')
+chrome_options.add_argument('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36')
 
 service = Service(ChromeDriverManager().install())
 web_driver = webdriver.Chrome(service = service, options=chrome_options)
@@ -54,10 +56,12 @@ wine_dec = []
 num = 463
 for i in range(1, 2) :
     url_list = []
+    time.sleep(3)
 
-    web_driver.get('https://redwinenjy.winehero.co.kr/shop/search.php?qname=1&qexplan=1&qid=1&qbasic=1&qfrom=1000&qto=300000&qcaid=&q=&qsort=&qorder=&page=' + str(i))
-    time.sleep(5)
-    '''table = web_driver.find_element(By.XPATH, '//*[@id="sct_wrap"]')
+    web_driver.get('https://redwinenjy.winehero.co.kr/shop/item.php?it_id=1624923174')
+    # web_driver.get('https://redwinenjy.winehero.co.kr/shop/search.php?qname=1&qexplan=1&qid=1&qbasic=1&qfrom=1000&qto=300000&qcaid=&q=&qsort=&qorder=&page=' + str(i))
+    # table = web_driver.find_element(By.XPATH, '//*[@id="sct_wrap"]')
+    '''
     div_list = table.find_elements(By.CLASS_NAME, 'product_list_box')
     
     for div in div_list :
@@ -66,7 +70,7 @@ for i in range(1, 2) :
         url = u.split('\'')
         url_list.append(url[1])
 '''
-print(web_driver.current_url)
+print(web_driver.title)
 print(web_driver.page_source)
 '''    for url in url_list :
         web_driver.get(url)
@@ -139,40 +143,5 @@ print(len(wine_acid))
 print(len(wine_tannin))
 
 # 워크북(엑셀파일)을 새로 만듭니다.
-wb = openpyxl.Workbook()
-
-# 현재 활성화된 시트를 선택합니다.
-sheet = wb.active
-# A1셀에 hello world!를 입력합니다.
-for index in range(93) : 
-    i = index + 1
-    # sheet.cell(row = i, column = 1).value = wine_no[index]
-    sheet.cell(row = i, column = 2).value = wine_en_name[index]
-    sheet.cell(row = i, column = 3).value = wine_kor_name[index]
-    sheet.cell(row = i, column = 4).value = wine_type[index]
-    sheet.cell(row = i, column = 5).value = wine_winery[index]
-    sheet.cell(row = i, column = 6).value = wine_winery_en[index]
-
-    sheet.cell(row = i, column = 7).value = wine_country[index]
-    sheet.cell(row = i, column = 8).value = wine_win[index]
-
-    sheet.cell(row = i, column = 9).value = wine_grape[index]
-    sheet.cell(row = i, column = 11).value = wine_paring[index]
-
-    sheet.cell(row = i, column = 10).value = wine_alc[index]
-
-    sheet.cell(row = i, column = 12).value = wine_sweetness[index]
-    sheet.cell(row = i, column = 13).value = wine_acid[index]
-    sheet.cell(row = i, column = 14).value = wine_body[index]
-    sheet.cell(row = i, column = 15).value = wine_tannin[index]
-
-    sheet.cell(row = i, column = 17).value = wine_image_list[index]
-
-    # sheet.cell(row = i, column = 9).value = wine_win[index]
-    sheet.cell(row = i, column = 19).value = wine_desc[index]
-    sheet.cell(row = i, column = 20).value = winery_desc[index]
-    # sheet.cell(row = i, column = 12).value = wine_sweetness[index]
-
-wb.save('redwinenjy.xlsx')
 
 '''
